@@ -14,6 +14,14 @@ Structured Output: Returns detailed, structured JSON responses with decisions, j
 
 Project Structure
 .
+Here is the project structure presented in a clear format.
+
+-----
+
+### Project Directory Structure
+
+```
+.
 ├── app/
 │   ├── core/
 │   │   └── config.py
@@ -27,8 +35,9 @@ Project Structure
 │   └── (Add your policy documents here)
 ├── .env
 ├── .gitignore
-├── main.py         <-- Run this file
+├── main.py       <-- Run this file
 └── requirements.txt
+```
 
 Setup Instructions
 1. Clone the Repository
