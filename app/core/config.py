@@ -1,28 +1,28 @@
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from a .env file
+# Load environment variables from a .env file in the project root.
 load_dotenv()
 
 class Settings:
     """
-    Application settings.
+    Application settings, loaded from environment variables.
     """
-    # Groq API Key
+    # Groq API Key for LLM inference.
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
     if not GROQ_API_KEY:
         raise ValueError("GROQ_API_KEY environment variable not set.")
     
-    # Path to the data directory
+    # Path to the data directory where documents are pre-loaded.
     DATA_PATH = os.getenv("DATA_PATH", "data")
     
-    # Embedding model (Groq currently does not provide embeddings, so use OpenAI or another provider if needed)
-    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-ada-002")
+    # Embedding model from HuggingFace.
+    EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "BAAI/bge-base-en-v1.5")
     
-    # LLM Model (Groq supported model, e.g., 'llama3-8b-8192')
+    # LLM Model for Groq.
     LLM_MODEL = os.getenv("LLM_MODEL", "llama3-8b-8192")
     
-    # Text splitter settings
+    # Text splitter settings for document chunking.
     CHUNK_SIZE = 1000
     CHUNK_OVERLAP = 200
 

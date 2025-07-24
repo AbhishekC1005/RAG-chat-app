@@ -8,11 +8,12 @@ from app.core.config import settings
 
 def create_rag_chain(vector_store: FAISS):
     """
-    Creates the full RAG chain for conversation.
+    Creates the full RAG chain for conversation and question-answering.
     """
     llm = ChatGroq(model=settings.LLM_MODEL, api_key=settings.GROQ_API_KEY)
 
-    # Contextualize question prompt
+    # Contextualize question prompt: This reformulates the user's question to be a standalone question
+    # based on chat history. This is useful for follow-up questions.
     contextualize_q_system_prompt = (
         "Given a chat history and the latest user question "
         "which might reference context in the chat history, "
@@ -32,7 +33,8 @@ def create_rag_chain(vector_store: FAISS):
         llm, vector_store.as_retriever(), contextualize_q_prompt
     )
 
-    # Answer question prompt
+    # Answering prompt: This prompt takes the retrieved documents (context) and the user's question
+    # to generate a final, concise answer.
     qa_system_prompt = (
         "You are an assistant for question-answering tasks. "
         "Use the following pieces of retrieved context to answer "
@@ -50,9 +52,10 @@ def create_rag_chain(vector_store: FAISS):
         ]
     )
 
+    # Chain that combines the documents into a single string to be passed to the LLM.
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
     
+    # The final retrieval chain that connects the retriever and the question-answering chain.
     rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
     
     return rag_chain
- 
